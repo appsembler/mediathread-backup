@@ -100,7 +100,7 @@ INSTALLED_APPS = (
     'mediathread_main',
     'sentry.client',
     'south',
-    'lettuce.django'
+#    'lettuce.django'
 )
 
 THUMBNAIL_SUBDIR = "thumbs"
