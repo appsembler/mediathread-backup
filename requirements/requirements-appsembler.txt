@@ -1,7 +1,7 @@
 ### Libs.txt
 
 #Django-1.1.tar.gz
-mediathread/requirements/src/Django-1.3.1.tar.gz
+#mediathread/requirements/src/Django-1.3.1.tar.gz
 mediathread/requirements/src/resolver-0.2.1.tar.gz
 mediathread/requirements/src/selector-0.8.11.tar.gz
 mediathread/requirements/src/Paste-1.7.2.tar.gz
@@ -24,7 +24,7 @@ mediathread/requirements/src/uuid-1.30.tar.gz
 # packages is kind of broken since lib/python/site-packages has apparently been renamed
 # to dist-packages. so on my system i'm actually downloading and installing them locally
 # during bootstrap
-mediathread/requirements/src/psycopg2-2.4-no-mx.tar.gz
+#mediathread/requirements/src/psycopg2-2.4-no-mx.tar.gz
 #psycopg2
 
 #MySQLdb #this doesn't seem to work--just make sure it's in site-packages globally
@@ -32,9 +32,9 @@ mediathread/requirements/src/psycopg2-2.4-no-mx.tar.gz
 #for djangosherd xmeml final cut pro support
 mediathread/requirements/src/xmeml-0.9.tar.gz
 
-mediathread/requirements/src/selenium-2.20.0.tar.gz
-mediathread/requirements/src/nose-1.1.2.tar.gz
-mediathread/requirements/src/lettuce-0.1.34.tar.gz
+#mediathread/requirements/src/selenium-2.20.0.tar.gz
+#mediathread/requirements/src/nose-1.1.2.tar.gz
+#mediathread/requirements/src/lettuce-0.1.34.tar.gz
 
 
 
