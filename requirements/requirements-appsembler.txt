@@ -1,23 +1,26 @@
 ### Libs.txt
 
-#Django-1.1.tar.gz
-/staging/staged/app/mediathread/requirements/src/Django-1.3.1.tar.gz
-/staging/staged/app/mediathread/requirements/src/resolver-0.2.1.tar.gz
-/staging/staged/app/mediathread/requirements/src/selector-0.8.11.tar.gz
-/staging/staged/app/mediathread/requirements/src/Paste-1.7.2.tar.gz
-/staging/staged/app/mediathread/requirements/src/PasteDeploy-1.3.3.tar.gz
-/staging/staged/app/mediathread/requirements/src/PasteScript-1.7.3.tar.gz
-/staging/staged/app/mediathread/requirements/src/cdap-1.0.tar.gz
-/staging/staged/app/mediathread/requirements/src/httplib2-0.6.0.tar.gz
-/staging/staged/app/mediathread/requirements/src/restclient-0.9.9.tar.gz
-/staging/staged/app/mediathread/requirements/src/feedparser-4.1.tar.gz
+Django==1.3.4
+resolver==0.2.1
+selector==0.8.11
+Paste==1.7.2
+PasteDeploy==1.3.3
+PasteScript==1.7.3
+restclient==0.9.9
+feedparser==4.1
 #/staging/staged/app/mediathread/requirements/src/imageuploader-0.1.tar.gz
-/staging/staged/app/mediathread/requirements/src/Markdown-2.0.tar.gz
+Markdown==2.0
+simplejson==2.0.9
+smartypants==1.6.0.2
+uuid==1.30
+
 # anders modified this to remove the stupid ez_setup requirement from setup.py
 /staging/staged/app/mediathread/requirements/src/pyenchant-1.5.1.tar.gz 
-/staging/staged/app/mediathread/requirements/src/simplejson-2.0.9.tar.gz
-/staging/staged/app/mediathread/requirements/src/smartypants-1.6.0.2.tar.gz
-/staging/staged/app/mediathread/requirements/src/uuid-1.30.tar.gz
+/staging/staged/app/mediathread/requirements/src/cdap-1.0.tar.gz
+/staging/staged/app/mediathread/requirements/src/httplib2-0.6.0.tar.gz
+#for djangosherd xmeml final cut pro support
+/staging/staged/app/mediathread/requirements/src/xmeml-0.9.tar.gz
+/staging/staged/app/mediathread/requirements/src/statsd-0.5.1.tar.gz
 
 # these will probably be installed globally, but i'll list them anyway for completeness
 # ..actually it's because i'm using py2.6 on ubuntu 9.04, where virtualenv's use of site
@@ -25,18 +28,14 @@
 # to dist-packages. so on my system i'm actually downloading and installing them locally
 # during bootstrap
 #/staging/staged/app/mediathread/requirements/src/psycopg2-2.4-no-mx.tar.gz
-#psycopg2
+psycopg2==2.0.10
 
 #MySQLdb #this doesn't seem to work--just make sure it's in site-packages globally
 
-#for djangosherd xmeml final cut pro support
-/staging/staged/app/mediathread/requirements/src/xmeml-0.9.tar.gz
 
 #/staging/staged/app/mediathread/requirements/src/selenium-2.20.0.tar.gz
 #/staging/staged/app/mediathread/requirements/src/nose-1.1.2.tar.gz
 #/staging/staged/app/mediathread/requirements/src/lettuce-0.1.34.tar.gz
-
-
 
 ### Apps.txt
 
@@ -58,4 +57,5 @@
 /staging/staged/app/mediathread/requirements/src/django-nose-0.1.3.tar.gz
 /staging/staged/app/mediathread/requirements/src/django-threadedcomments-0.9.tar.gz
 /staging/staged/app/mediathread/requirements/src/django_courseaffils-0.4.tar.gz 
+/staging/staged/app/mediathread/requirements/src/django-statsd-mozilla-0.3.3.tar.gz
 
