@@ -33,30 +33,30 @@ MEDIA_URL = '/uploads/'
 ADMIN_MEDIA_PREFIX = '/media/'
 
 TEMPLATE_LOADERS = (
-    'django.template.loaders.filesystem.load_template_source',
-    'django.template.loaders.app_directories.load_template_source',
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
 )
 
 ### be careful: if you add/remove something here
 ### do the same with settings_production.py
 TEMPLATE_CONTEXT_PROCESSORS = (
-    'django.core.context_processors.auth',
+    'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.debug',
     'django.core.context_processors.request',
     'mediathread_main.views.django_settings',
     )
 
 MIDDLEWARE_CLASSES = (
+    # 'django_statsd.middleware.GraphiteRequestTimingMiddleware',
+    # 'django_statsd.middleware.GraphiteMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.flatpages.middleware.FlatpageFallbackMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
     'courseaffils.middleware.CourseManagerMiddleware',
     'mediathread_main.middleware.AuthRequirementMiddleware',
-    'djangohelpers.middleware.HttpDeleteMiddleware',
-    #'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'djangohelpers.middleware.HttpDeleteMiddleware'
 )
 
 ROOT_URLCONF = 'mediathread.urls'
@@ -72,8 +72,7 @@ TEMPLATE_DIRS = (
 
 LETTUCE_APPS = (
     'mediathread_main',
-    'projects',
-    'assetmgr'
+    'projects'
 )
 
 INSTALLED_APPS = (
@@ -101,7 +100,14 @@ INSTALLED_APPS = (
     'sentry.client',
     'south',
 #    'lettuce.django'
+#    'django_statsd',
 )
+
+# STATSD_CLIENT = 'statsd.client'
+# STATSD_PREFIX = 'mediathread'
+# STATSD_HOST = 'localhost'
+# STATSD_PORT = 8125
+# STATSD_PATCHES = ['django_statsd.patches.db', ]
 
 THUMBNAIL_SUBDIR = "thumbs"
 EMAIL_SUBJECT_PREFIX = "[mediathread] "
@@ -171,11 +177,6 @@ def no_reject(request, reason):
     return None
 
 CSRF_FAILURE_VIEW = no_reject
-
-LETTUCE_APPS = (
-    'mediathread_main',
-)
-
 
 #if you add a 'deploy_specific' directory
 #then you can put a settings.py file and templates/ overrides there

@@ -5,8 +5,9 @@ var DiscussionPanelHandler = function (el, parent, panel, space_owner) {
     self.parentContainer = parent;
     self.space_owner = space_owner;
     self.form = jQuery(self.el).find("form.threaded_comments_form")[0];
-    self.max_comment_length = parseInt(
-            self.form.getAttribute('data-maxlength'), 10);
+    self.max_comment_length = parseInt(self.form.getAttribute('data-maxlength'), 10);
+    
+    djangosherd.storage.json_update(panel.context);
 
     jQuery(window).resize(function () {
         self.resize();
@@ -16,13 +17,25 @@ var DiscussionPanelHandler = function (el, parent, panel, space_owner) {
     jQuery(window).bind('tinymce_init_instance', function (event, instance, param2) {
         self.onTinyMCEInitialize(instance);
     });
+    
+    self._bind(self.el, "td.panel-container", "panel_state_change", function () {
+        self.onClosePanel(jQuery(this).hasClass("subpanel"));
+    });
 
     // Setup the media display window.
     self.citationView = new CitationView();
     self.citationView.init({
         'default_target' : panel.context.discussion.id + "-videoclipbox",
         'onPrepareCitation' : self.onPrepareCitation,
-        'presentation' : "medium"
+        'presentation' : "medium",
+        'clipform': true,
+        'winHeight': function () {
+            var elt = jQuery(self.el).find("div.asset-view-published")[0];
+            return jQuery(elt).height() -
+                (jQuery(elt).find("div.annotation-title").height() +
+                 jQuery(elt).find("div.asset-title").height() +
+                 jQuery(elt).find("div.discussion-toolbar-row").height() + 15);
+        }
     });
     self.citationView.decorateLinks(self.el.id);
 
@@ -60,8 +73,19 @@ var DiscussionPanelHandler = function (el, parent, panel, space_owner) {
         self.hide_comment_form(false);
     }
     
-    self.resize();
+    jQuery(window).trigger("resize");
 };
+
+DiscussionPanelHandler.prototype.isEditing = function () {
+    var self = this;
+    return jQuery(self.form).css("display") === "block";
+};
+
+DiscussionPanelHandler.prototype.isSubpanelOpen = function () {
+    var self = this;
+    return jQuery(self.el).find("td.panel-container.collection").hasClass("open");
+};
+
 
 DiscussionPanelHandler.prototype.onTinyMCEInitialize = function (instance) {
     var self = this;
@@ -86,6 +110,7 @@ DiscussionPanelHandler.prototype.onTinyMCEInitialize = function (instance) {
             'template_label' : "collection_table",
             'create_annotation_thumbs' : true,
             'space_owner' : self.space_owner,
+            'citable': true,
             'view_callback': function () {
                 var newAssets = self.collectionList.getAssets();
                 self.tinyMCE.plugins.citation.decorateCitationAdders(newAssets);
@@ -121,13 +146,13 @@ DiscussionPanelHandler.prototype.resize = function () {
     }
 
     visible += 45;
-    jQuery(self.el).find('div.threadedcomments-container').css('height', (visible + 20) + "px");
+    jQuery(self.el).find('div.threadedcomments-container').css('height', (visible + 30) + "px");
     
     // Resize the collections box, subtracting its header elements
     jQuery(self.el).find('div.collection-assets').css('height', (visible - 50) + "px");
     
     // Resize the media display window
-    jQuery(self.el).find('div.asset-view-published').css('height', (visible + 20) + "px");
+    jQuery(self.el).find('div.asset-view-published').css('height', (visible + 30) + "px");
 
     // For IE
     jQuery(self.el).find('tr.discussion-content-row').css('height', (visible) + "px");
@@ -135,12 +160,29 @@ DiscussionPanelHandler.prototype.resize = function () {
 
 };
 
-DiscussionPanelHandler.prototype.onClose = function () {
+DiscussionPanelHandler.prototype.onClosePanel = function () {
     var self = this;
     // close any outstanding citation windows
     if (self.tinyMCE) {
         self.tinyMCE.plugins.editorwindow._closeWindow();
     }
+    self.render();
+};
+
+DiscussionPanelHandler.prototype.render = function () {
+    var self = this;
+    
+    // Give precedence to media view IF the subpanel is open and we're in readonly mode
+    
+    if (!self.isEditing() && self.isSubpanelOpen()) {
+        jQuery(self.el).find(".panel-content").removeClass("fluid").addClass("fixed");
+        jQuery(self.el).find("td.panel-container.collection").removeClass("fixed").addClass("fluid");
+    } else {
+        jQuery(self.el).find(".panel-content").removeClass("fixed").addClass("fluid");
+        jQuery(self.el).find("td.panel-container.collection").removeClass("fluid").addClass("fixed");
+    }
+    
+    jQuery(window).trigger("resize");
 };
 
 DiscussionPanelHandler.prototype.onPrepareCitation = function (target) {
@@ -178,7 +220,7 @@ DiscussionPanelHandler.prototype.open_respond = function (evt) {
 
     jQuery(self.form).addClass("response");
     jQuery(self.form).children("h3").show();
-    jQuery(self.form).children("input.cancel").show();
+    jQuery(self.form).find("input.cancel").show();
 
     var elt = evt.srcElement || evt.target || evt.originalTarget;
     self.form.elements.parent.value = elt.getAttribute("data-comment");
@@ -186,7 +228,7 @@ DiscussionPanelHandler.prototype.open_respond = function (evt) {
     self.mode = 'post';
 
     var li = jQuery(elt).parents("li.comment-thread")[0];
-    jQuery(li).find("div.respond_to_comment_form_div").hide();
+    jQuery("div.respond_to_comment_form_div").hide();
 
     var comment_div = jQuery(li).children("div.comment")[0];
     self.open_comment_form(comment_div, true);
@@ -213,11 +255,10 @@ DiscussionPanelHandler.prototype.open_edit = function (evt, focus) {
         var li = jQuery(elt).parents("li.comment-thread")[0];
         var myText = jQuery(li).find("div.threaded_comment_text")[0];
         jQuery(myText).hide();
-        var myToolbar = jQuery(li).find("div.respond_to_comment_form_div")[0];
-        jQuery(myToolbar).hide();
+        jQuery("div.respond_to_comment_form_div").hide(); // hide all toolbars until this one is saved or cancelled
 
         elt = jQuery(li).find("div.threaded_comment_header")[0];
-        jQuery(self.form).children("input.cancel").show();
+        jQuery(self.form).find("input.cancel").show();
 
         self.open_comment_form(elt);
 
@@ -230,10 +271,21 @@ DiscussionPanelHandler.prototype.open_edit = function (evt, focus) {
 
 DiscussionPanelHandler.prototype.open_comment_form = function (insertAfter, scroll) {
     var self = this;
+    
+    jQuery(self.el).find("div.threaded_comment_header").addClass("opacity_fiftypercent");
+    jQuery(self.el).find("div.threaded_comment_text").addClass("opacity_fiftypercent");
+    jQuery(self.el).find("div.threaded_comment_text").find("a.materialCitation").addClass("disabled");
+
+    
     if (insertAfter) {
         self.tinyMCE = null;
         tinyMCE.execCommand("mceRemoveControl", false, "id_comment");
         jQuery(self.form).insertAfter(insertAfter);
+        
+        ///makes it resizable--somewhat hacking tinyMCE.init()
+        tinyMCE.settings.theme_advanced_statusbar_location = "bottom";
+        tinyMCE.settings.theme_advanced_resize_vertical = true;
+
         tinyMCE.execCommand("mceAddControl", false, "id_comment");
     }
     jQuery(self.form).show('fast', function () {
@@ -250,27 +302,34 @@ DiscussionPanelHandler.prototype.open_comment_form = function (insertAfter, scro
     // Unload any citations
     self.citationView.unload();
     jQuery(self.el).find("div.asset-view-published").hide();
-    jQuery(self.el).find("td.panhandle-stripe div.label").html("Embed Media");
+    jQuery(self.el).find("td.panhandle-stripe div.label").html("Insert Selections");
     jQuery(self.el).find("div.collection-materials").show();
+    self.render();
 };
 
 DiscussionPanelHandler.prototype.hide_comment_form = function () {
     var self = this;
+    
+    jQuery(self.el).find("div.threaded_comment_header").removeClass("opacity_fiftypercent");
+    jQuery(self.el).find("div.threaded_comment_text").removeClass("opacity_fiftypercent");
+    jQuery(self.el).find("div.threaded_comment_text").find("a.materialCitation").removeClass("disabled");
     
     // Switch to a readonly view
     if (self.tinyMCE) {
         self.tinyMCE.plugins.editorwindow._closeWindow();
     }
     
-    jQuery(self.form).hide('fast', function () {        
+    jQuery(self.form).hide('fast', function () {
         jQuery(self.form.elements.title).hide();
     
         // Switch to a readonly view
         jQuery(self.el).find("div.collection-materials").hide();
     
         jQuery(self.el).find("td.panhandle-stripe div.label")
-                .html("View Media");
+                .html("View Inserted Selections");
         jQuery(self.el).find("div.asset-view-published").show();
+        
+        self.render();
     });
 };
 
@@ -505,23 +564,23 @@ DiscussionPanelHandler.prototype.create = function (obj, doc) {
     // {{current_comment.id}}
     // {{current_comment.name}}
     // {{current_comment.comment|safe}}
-    var html = '<li id="comment-{{current_comment.id}}"'
-            + 'class="comment-thread">'
-            + '<div class="comment new-comment">'
-            + ' <div class="threaded_comment_header">'
-            + '<span class="threaded_comment_author">{{current_comment.name}}</span>&nbsp;'
-            + '<a class="comment-anchor" href="#comment-{{current_comment.id}}">said:</a>'
-            + '<div class="respond_to_comment_form_div" id="respond_to_comment_form_div_id_{{current_comment.id}}">'
-            + '<span class="respond_prompt comment_action" data-comment="{{current_comment.id}}" title="Click to show or hide the comment form">'
-            + 'Respond<!-- to comment {{current_comment.id}}: --></span>'
-            + ' <span class="edit_prompt comment_action" data-comment="{{current_comment.id}}" title="Click to show or hide the edit comment form">Edit</span>'
-            + '<div class="comment_form_space"></div>'
-            + '</div>'
-            + ' </div>'
-            + '<div class="threaded_comment_title">{{current_comment.title}}</div>'
-            + '<div class="threaded_comment_text">'
-            + '{{current_comment.comment|safe}}' + '</div>' + '</div>'
-            + '</li>';
+    var html = '<li id="comment-{{current_comment.id}}"' +
+        'class="comment-thread">' +
+        '<div class="comment new-comment">' +
+        ' <div class="threaded_comment_header">' +
+        '<span class="threaded_comment_author">{{current_comment.name}}</span>&nbsp;' +
+        '<a class="comment-anchor" href="#comment-{{current_comment.id}}">said:</a>' +
+        '<div class="respond_to_comment_form_div" id="respond_to_comment_form_div_id_{{current_comment.id}}">' +
+        '<span class="respond_prompt comment_action" data-comment="{{current_comment.id}}" title="Click to show or hide the comment form">' +
+        'Respond<!-- to comment {{current_comment.id}}: --></span>' +
+        ' <span class="edit_prompt comment_action" data-comment="{{current_comment.id}}" title="Click to show or hide the edit comment form">Edit</span>' +
+        '<div class="comment_form_space"></div>' +
+        '</div>' +
+        ' </div>' +
+        '<div class="threaded_comment_title">{{current_comment.title}}</div>' +
+        '<div class="threaded_comment_text">' +
+        '{{current_comment.comment|safe}}' + '</div>' + '</div>' +
+        '</li>';
     //'</ul>';
 
     var text = html.replace(/\{\{current_comment\.id\}\}/g, obj.id).replace(
@@ -549,7 +608,7 @@ DiscussionPanelHandler.prototype.readonly = function () {
     if (!jQuery(self.form).is(":visible")) {
         // Switch to Edit View
         jQuery(self.el).find("td.panhandle-stripe div.label").html(
-                "Embed Media");
+                "Insert Selections");
         jQuery(self.el).find("div.asset-view-published").hide();
 
         // Kill the asset view
@@ -565,7 +624,7 @@ DiscussionPanelHandler.prototype.readonly = function () {
         jQuery(self.el).find("div.collection-materials").hide();
 
         jQuery(self.el).find("td.panhandle-stripe div.label").html(
-                "View Media");
+                "View Inserted Selections");
         jQuery(self.el).find("div.asset-view-published").show();
     }
 

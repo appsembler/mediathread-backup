@@ -1,13 +1,13 @@
 Feature: Assignment
 
-    Scenario: 1. Assignment - Create by test_instructor, verify initial state
+    Scenario: assignment.feature 1. Instructor creates assignment
         Using selenium
         Given I am test_instructor in Sample Course
         Given there are no projects
         
         # Create an assignment from the home page
-        There is a New Composition button
-        When I click the New Composition button
+        There is a Create Composition button
+        When I click the Create Composition button
         Then I am at the Untitled page
         There is an open Composition panel
 
@@ -57,13 +57,13 @@ Feature: Assignment
         And the Assignment panel does not have a Respond To Assignment button
         And the Assignment panel does not have a Responses (1) button
         
-        # The project shows on Recent Activity
-        When I click the Recent Activity button
+        # The project shows on View Recent Activity
+        When I click the View Recent Activity button
         Then the most recent notification is "Assignment: Scenario 1"
         
         Finished using Selenium 
         
-    Scenario: 2. Assignment Response - by student, verify creation & initial state
+    Scenario: assignment.feature 2. Student creates assignment response
         Using selenium
         Given there is a sample assignment
         Given I am test_student_one in Sample Course
@@ -113,15 +113,7 @@ Feature: Assignment
         When I click the "Sample Assignment Response" link
         Then I am at the Sample Assignment Response page
         
-        Then there is an open Assignment panel
-        And the Assignment panel does not have an Edit button
-        And the Assignment panel does not have a Preview button
-        And the Assignment panel does not have a Save button
-        And the Assignment panel does not have a Revisions button
-        And the Assignment panel does not have a +/- Author button
-        And the Assignment panel does not have a Respond to Assignment button
-        And there is not an "Assignment" link
-        And the Assignment panel has a My Response button
+        Then there is a closed Assignment panel
         
         And there is an open Composition panel
         The Composition panel has a Revisions button
@@ -132,13 +124,13 @@ Feature: Assignment
         And the Composition panel does not have a +/- Author button
         And there is a "Submitted to Instructor" link 
         
-        # The project shows on Recent Activity
-        When I click the Recent Activity button
+        # The project shows on View Recent Activity
+        When I click the View Recent Activity button
         Then the most recent notification is "Sample Assignment Response"
         
         Finished using Selenium 
 
-    Scenario: 3. Sample Assignment Response - view and provide feedback as an instructor
+    Scenario: assignment.feature 3. Instructor provides response feedback
         Using selenium
         Given there is a sample assignment and response
         Given I am test_instructor in Sample Course
@@ -150,11 +142,7 @@ Feature: Assignment
         When I click the "Sample Assignment Response" link
         Then I am at the Sample Assignment Response page
         
-        There is an open Assignment panel
-        And the Assignment Panel has a Class Responses (1) button
-        And the Assignment Panel does not have a My Response button
-        And the Assignment Panel does not have a Respond to Assignment button
-        And there is an "Assignment" link
+        There is an closed Assignment panel
         
         There is an open Composition panel
         And the Composition Panel does not have a Revisions button
@@ -170,8 +158,8 @@ Feature: Assignment
         When I click the Create Instructor Feedback button
         
         # BUG -- the assignment panel should close not the composition
-        Then there is an open Assignment panel
-        Then there is a closed Composition panel
+        Then there is a closed Assignment panel
+        Then there is an open Composition panel
         Then there is an open Discussion panel
         
         When I write some text for the discussion
@@ -204,7 +192,7 @@ Feature: Assignment
 
         Finished using Selenium
         
-    Scenario Outline: 4. Assignment Response - visibility rules        
+    Scenario Outline: assignment.feature 4. Assignment Response - visibility rules        
         Using selenium
         Given there is a sample assignment and response
         Give I am test_student_one in Sample Course
@@ -237,7 +225,7 @@ Feature: Assignment
         | Instructor - only author(s) and instructor can view | Submitted to Instructor | test_student_two |   0   |
         | Whole Class - all class members can view            | Published to Class      | test_student_two |   1   |
 
-    Scenario: 5. Class Responses link - instructor       
+    Scenario: assignment.feature 5. Class Responses link - instructor       
         Using selenium
         Given there is a sample assignment and response
         Give I am test_instructor in Sample Course
@@ -253,13 +241,13 @@ Feature: Assignment
         Then I click the View Response button
         
         Then I am at the Sample Assignment Response page
-        And there is an open Assignment panel
+        And there is an closed Assignment panel
         And there is an open Composition panel
         And the Composition title is "Sample Assignment Response"
         
         Finished using Selenium
         
-    Scenario: 6. Class Responses link + Response Visibility + Respond - Student Two       
+    Scenario: assignment.feature 6. Class Responses link + Response Visibility + Respond - Student Two       
         Using selenium
         Given there is a sample assignment and response
         
@@ -298,18 +286,16 @@ Feature: Assignment
         When I select Student One's response
         And I click the View Response button
         Then I am at the Sample Assignment Response page
-        And there is an open Assignment panel
+        And there is an closed Assignment panel
         And there is an open Composition panel
         And the Composition title is "Sample Assignment Response"
         
         # Create my own response and make sure it's the right one
-        When I click the Respond to Assignment button
+	    When I toggle the Assignment panel
+        Then I click the Respond to Assignment button
         Then I am at the Untitled page
         
-        And there is an open Assignment panel
-        And the Assignment title is "Sample Assignment"
-        And the Assignment Panel has a Class Responses (2) button
-        And the Assignment Panel has a My Response button
+        And there is a closed Assignment panel
         
         And there is an open Composition panel
         The Composition panel has a Revisions button
@@ -317,5 +303,10 @@ Feature: Assignment
         And the Composition panel does not have an Edit button
         And the Composition panel has a Save button
         And the Composition panel has a +/- Author button
+        
+        Then I call the Composition "Assignment Response: Scenario 6"
+        When I click the Save button
+        Then I see a Save Changes dialog
+        Then I save the changes
         
         Finished using Selenium

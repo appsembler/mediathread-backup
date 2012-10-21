@@ -1,13 +1,13 @@
 Feature: Manage Sources
 
-    Scenario: 1. Manage Sources - View Source Media, Add Sources, Enable Upload 
+    Scenario: manage_sources.feature 1. View Add to My Collection, Add Sources, Enable Upload 
         Using selenium
         Given I am test_instructor in Sample Course
         
-        When I click the Source Media button
-        Then I am at the Source Media page
-        And there is a Source Media column
-        And there is help for the Source Media column
+        When I click the Add to My Collection button
+        Then I am at the Add to My Collection page
+        And there is an Add to My Collection column
+        And there is help for the Add to My Collection column
         And I do not see "Upload Video"
         And I see 0 sources
         
@@ -27,22 +27,30 @@ Feature: Manage Sources
         Then I'm told "You Tube has been enabled for your class"
         Then there is an Added button
 
-        # Under Source Media        
-        When I click the Source Media button
-        Then I am at the Source Media page
+        # Under Add to My Collection        
+        When I click the Add to My Collection button
+        Then I am at the Add to My Collection page
         And I see "Upload Video"
         And I see 1 source
+        
+        # On the Home Page
+        When I click the HOME button
+        Then I am at the Home page
+        The Collection panel has no "You Tube" item
+        And the Collection panel has a "MAAP Award Reception" item
+        And the Collection panel has a "Mediathread: Introduction" item
+        And the Collection panel has a "The Armory - Home to CCNMTL'S CUMC ..." item
         
         Finished using Selenium
    
            
-    Scenario: 2. Manage Sources - Video Upload - Instructors Only
+    Scenario: manage_sources.feature 2. Video Upload - Instructors Only
         Using selenium
         Given I am test_instructor in Sample Course
         Given video upload is enabled
         
         # By default, instructors and administrators are allowed to upload
-        When I click the Source Media button
+        When I click the Add to My Collection button
         Then I see "Upload Video"
         
         # Student cannot see
@@ -51,12 +59,12 @@ Feature: Manage Sources
         When I type "test" for password
         When I click the Log In button
         Then I am at the Home page
-        When I click the Source Media button
+        When I click the Add to My Collection button
         Then I do not see "Upload Video"
 
         Finished using Selenium
         
-    Scenario: 3. Manage Sources - Video Upload - Administrators Only 
+    Scenario: manage_sources.feature 3. Video Upload - Administrators Only 
         Using selenium
         Given I am test_instructor in Sample Course
         Given video upload is enabled
@@ -69,7 +77,7 @@ Feature: Manage Sources
         Then I'm told "Your changes have been saved"
         
         # Instructor cannot see
-        When I click the Source Media button
+        When I click the Add to My Collection button
         Then I do not see "Upload Video"
         
         # Student cannot see
@@ -78,12 +86,12 @@ Feature: Manage Sources
         When I type "test" for password
         When I click the Log In button
         Then I am at the Home page
-        When I click the Source Media button
+        When I click the Add to My Collection button
         Then I do not see "Upload Video"
         
         Finished using Selenium
         
-    Scenario: 4. Manage Sources - Video Upload - Students Too 
+    Scenario: manage_sources.feature 4. Video Upload - Students Too 
         Using selenium
         Given I am test_instructor in Sample Course
         Given video upload is enabled
@@ -96,7 +104,7 @@ Feature: Manage Sources
         Then I'm told "Your changes have been saved"
         
         # Instructor can see
-        When I click the Source Media button
+        When I click the Add to My Collection button
         Then I see "Upload Video"
         
         # Student can see
@@ -105,7 +113,59 @@ Feature: Manage Sources
         When I type "test" for password
         When I click the Log In button
         Then I am at the Home page
-        When I click the Source Media button
+        When I click the Add to My Collection button
         Then I see "Upload Video"
 
+        Finished using Selenium
+        
+    Scenario: manage_sources.feature 5. Video Upload - On Behalf Of Permissions
+        Using selenium
+        Given I am test_instructor in Sample Course
+        Given video upload is enabled
+        
+        # Set for students
+        When I click the Instructor Dashboard button
+        When I click the Manage Sources button
+        Then I am at the Manage Sources page
+        When I allow Students to upload videos
+        Then I'm told "Your changes have been saved"
+        
+        # Regular Instructor cannot upload on behalf of
+        When I click the Add to My Collection button
+        Then I am at the Add to My Collection page
+        Then I see "Upload Video"
+        And I cannot upload on behalf of other users
+        
+        # Regular student cannot upload on someone's behalf
+        Given I am test_student_one in Sample Course
+        When I click the Add to My Collection button
+        Then I am at the Add to My Collection page        
+        Then I see "Upload Video"
+        And I cannot upload on behalf of other users
+        
+        # Student with special privileges can upload on someone's behalf
+        Given I am test_ta in Sample Course
+        When I click the Add to My Collection button
+        Then I am at the Add to My Collection page        
+        Then I see "Upload Video"
+        And I can upload on behalf of other users
+        
+        # Staff that are not a member of this class cannot upload on someone's behalf
+        Given I am not logged in
+        When I access the url "/"
+        Then I am at the Login page
+        When I type "test_staff" for username
+        When I type "test" for password
+        When I click the Log In button        
+        Then I am at the Switch Course page        
+        When I click the "Sample Course" link
+        Then I am in the Sample Course class        
+        When I click the Add to My Collection button
+        Then I am at the Add to My Collection page        
+        Then I see "Upload Video"
+        And I see "You must be a course member to upload media files."
+        And I cannot upload on behalf of other users
+        
+
+               
         Finished using Selenium
