@@ -358,7 +358,7 @@ def annotation_delete(request, asset_id, annot_id):
     except SherdNote.DoesNotExist:
         return HttpResponseForbidden("forbidden")
 
-@rendered_with('assetmgr/browse_sources.html')
+@rendered_with('assetmgr/add_to_my_collection.html')
 def browse_sources(request):
     c = request.course
 
@@ -416,9 +416,10 @@ def browse_sources(request):
     return rv
 
 @login_required  
-@allow_http("POST")
+@allow_http("GET", "POST")
 def source_redirect(request):
-    url = request.POST.get('url', None)
+    url = request.REQUEST.get('url', None)
+
     if not url:
         url = reverse('explore')
     else:
