@@ -12,3 +12,4 @@ start_server.sh
 .settings
 lettuce.db
 .DS_Store
+site_media
