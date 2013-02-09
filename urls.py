@@ -37,7 +37,7 @@ urlpatterns = patterns('',
                        (r'^_stats/', direct_to_template, {'template': 'mediathread_main/stats.html'}),
                        (r'^admin/', admin.site.urls),
                        (r'^jsi18n', 'django.views.i18n.javascript_catalog'),
-#                       (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': site_media_root}),
+                       (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': site_media_root}),
                        url(r'^bookmarklets/(?P<path>analyze.js)$', 'django.views.static.serve', {'document_root': bookmarklet_root}, name='analyze-bookmarklet'),
                        ## one for cache defeating
                        url(r'^nocache/\w+/bookmarklets/(?P<path>analyze.js)$', 'django.views.static.serve', {'document_root': bookmarklet_root}, name='nocache-analyze-bookmarklet'),
