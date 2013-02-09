@@ -1,0 +1,20 @@
+-r libs-dotcloud.txt
+/home/dotcloud/current/mediathread/requirements/src/django-smartif-0.1.tar.gz
+/home/dotcloud/current/mediathread/requirements/src/djangowind-0.9.8.tar.gz
+/home/dotcloud/current/mediathread/requirements/src/sorl-3.1.tar.gz
+#/home/dotcloud/current/mediathread/requirements/src/django-survey-0.0.2.tar.gz
+/home/dotcloud/current/mediathread/requirements/src/django-tagging-0.3.1.tar.gz
+/home/dotcloud/current/mediathread/requirements/src/template_utils-0.4p2.tar.gz
+/home/dotcloud/current/mediathread/requirements/src/typogrify-1.0.tar.gz
+/home/dotcloud/current/mediathread/requirements/src/django-modelversions-1.0.tar.gz
+/home/dotcloud/current/mediathread/requirements/src/djangohelpers-0.3dev.tar.gz
+/home/dotcloud/current/mediathread/requirements/src/django-indexer-0.2.1.tar.gz
+/home/dotcloud/current/mediathread/requirements/src/django-templatetag-sugar-0.1.tar.gz
+/home/dotcloud/current/mediathread/requirements/src/django-paging-0.2.2.tar.gz
+/home/dotcloud/current/mediathread/requirements/src/django-sentry-1.5.4.tar.gz
+/home/dotcloud/current/mediathread/requirements/src/South-0.7.3.tar.gz
+/home/dotcloud/current/mediathread/requirements/src/django-annoying-0.7.6.tar.gz
+/home/dotcloud/current/mediathread/requirements/src/django-nose-0.1.3.tar.gz
+/home/dotcloud/current/mediathread/requirements/src/django-threadedcomments-0.9.tar.gz
+/home/dotcloud/current/mediathread/requirements/src/django_courseaffils-0.4.tar.gz 
+/home/dotcloud/current/mediathread/requirements/src/django-statsd-mozilla-0.3.3.tar.gz
