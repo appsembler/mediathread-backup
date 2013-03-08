@@ -29,6 +29,10 @@ Chrome: http://code.google.com/p/selenium/wiki/ChromeDriver
 You can download the Chrome driver from here:
 https://code.google.com/p/chromedriver/downloads/list
 
+Copy chromedriver into a directory that is in your system path:
+
+$ sudo cp chromedriver /usr/local/bin
+
 -------------------------
 BASIC LETTUCE VOCABULARY
 -------------------------
