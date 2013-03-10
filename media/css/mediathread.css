@@ -427,6 +427,13 @@ ul#projects h3 .edit_icon {
     margin: 0 20px 0 0;
 }
 
+.upload_for {
+    display: inline;
+    float: left;
+    margin-right: 20px;
+    padding: 10px 0;
+}
+
 a.btn-primary,
 .btn-primary,
 input#uploader {
@@ -713,7 +720,7 @@ img
     color: white;
 }
 
-/* ########## jQuery UI extensions ########## */
+/* ########## jQuery UI extensions/overrides ########## */
 
 .ui-icon-reverse { 
     width: 16px; 
@@ -738,6 +745,10 @@ html.busy, html.busy * {
     background-image: url(../img/ajax-loader.gif);
     background-repeat: no-repeat;
     background-position: center center;
+}
+
+.ui-accordion .ui-accordion-content {
+    padding: .5em 1em !important;
 }
 
 /* ########## Blocks style definitions ########## */
@@ -3389,7 +3400,7 @@ input.videoplay {
     border: none;
     background-color: white;
     width: 25px;
-    height: 15px;
+    height: 20px;
     cursor: pointer;
 }
 
@@ -3573,6 +3584,21 @@ ul.instructor-list li {
     margin: 5px 0 10px 0;
     font-weight: normal;
     line-height: 17px;
+}
+
+ul.instructor-list span.draghandle {
+    margin-left: -5px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+ul.instructor-list li.dragging {
+    border: 1px solid lightGrey;
+    background-color: #E6E6E6;
+    color: #555/*{fcDefault}*/;
+    margin: 0;
+    padding: 0.4em .185em;
+    height: 18px;    
 }
 
 td.media-column .column-contents {
@@ -4188,10 +4214,30 @@ div.selected-for-import div.results {
     padding: 5px;
 }
 
+.import-dialog div.import-stuff table tr td.spacer {
+    height: 2px;
+    padding: 0;
+}
+
 .import-dialog div.import-stuff table tr td.title {
     width: 95%;
     text-overflow: ellipsis;
     vertical-align: top;
+}
+
+.import-dialog div.import-stuff table tr td.composition {
+    width: 10px;
+    background-color: #1E77BD;
+}
+
+.import-dialog div.import-stuff table tr td.assignment {
+    width: 10px;
+    background-color: #39B54A;
+}
+
+.import-dialog div.import-stuff table tr td.asset {
+    width: 10px;
+    background-color: #A88448;
 }
 
 .import-dialog div.import-stuff table tr.odd {
@@ -4277,7 +4323,7 @@ div.feature-help div.feature-help-instructions {
 }
 
 div.feature-help div.feature-help-instructions ol,
-div.feature-help div.feature-help-instructions ul{
+div.feature-help div.feature-help-instructions ul {
     margin: 0 .4em 0 1.25em;
 }
 
@@ -4285,3 +4331,16 @@ div.feature-help div.feature-help-instructions img {
     vertical-align: middle;
     margin-bottom: 4px;
 }
+
+    
+/* css for timepicker */
+.ui-timepicker-div .ui-widget-header { margin-bottom: 8px; }
+.ui-timepicker-div dl { text-align: left; }
+.ui-timepicker-div dl dt { height: 25px; margin-bottom: -25px; }
+.ui-timepicker-div dl dd { margin: 0 10px 10px 65px; }
+.ui-timepicker-div td { font-size: 90%; }
+.ui-tpicker-grid-label { background: none; border: none; margin: 0; padding: 0; }
+
+.ui-timepicker-rtl{ direction: rtl; }
+.ui-timepicker-rtl dl { text-align: right; }
+.ui-timepicker-rtl dl dd { margin: 0 65px 10px 10px; }
