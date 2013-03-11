@@ -13,3 +13,4 @@ start_server.sh
 lettuce.db
 .DS_Store
 site_media
+chromedriver.log
