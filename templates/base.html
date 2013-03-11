@@ -181,115 +181,6 @@
                 this.user_full_name = "{%public_name for request.user %}";
             {% endif %}
         })();
-    </script>	
-</head>
-{% course_role for request.user in course as role_in_course %}
-<body class="one_column role-{{role_in_course}} {% block extra_body_class %}{% endblock %}">
-<!-- Google Tag Manager -->
-<noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-4WNX"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'//www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-4WNX');</script>
-<!-- End Google Tag Manager -->
-<div id="container">
-    {% block masthead %}
-    	<!-- ###### Site banner ###### -->
-    	<div id="header">
-
-            <div id="standardnav_container">   
-            <div id="mediathread_logo"><a href="/"><img src="/site_media/img/logo_mediathread_new.png" alt="mediathread logo" /></a></div>
-            {% block standardnav %}            
-               <ul id="standardnav">
-                    {% if request.user.is_authenticated %}   
-                        {% ifequal role_in_course "non-member" %}
-                            <li>
-                                <div class="nonmember">You are not a class member!</div>
-                            </li>
-                        {% endifequal %}     
-                        <li>
-                            <div class="settings_menu user closed">
-                                <div class="right ui-icon-reverse ui-icon-triangle-1-s"></div>
-                                <div class="left settings_menu_title">{% public_name for user %}</div>                                
-                            </div>
-                            <div class="visualclear"></div>
-                            <!-- Settings Menu -->
-                            <div class="settings_submenu" style="display: none">
-                                {%if user.is_staff %}
-                                    <a href="/admin/">Admin</a>
-                                {%endif%}
-                                
-                                {% num_courses for user as user_courses %}
-                                {% if user_courses > 1 or user.is_staff %}
-                                    <a href="/?unset_course">Switch Course</a>
-                                {% endif %}
-                                    
-                                <a href="/accounts/logout/">Log Out</a>
-                            </div>
-                        </li>
-                        
-                        {% if is_course_faculty %}
-                        <li>
-                            <div class="settings_menu tools closed">
-                                <div class="right ui-icon-reverse ui-icon-triangle-1-s"></div>
-                                <div class="left settings_menu_title">Tools</div>                                
-                            </div>
-                            <div class="visualclear"></div>
-                            <!-- Settings Menu -->
-                            <div class="settings_submenu" style="display: none">
-                                 <a href="/dashboard/settings/">Manage Settings</a>
-                                 <a href="/dashboard/addsource/">Manage Sources</a>
-                                 {% ifnotequal role_in_course "non-member" %}
-                                    <a href="/dashboard/migrate/">Migrate Materials</a>
-                                 {% endifnotequal %}
-                            </div>
-                        </li>
-                        <li>
-                            <div class="settings_menu reports closed">
-                                <div class="right ui-icon-reverse ui-icon-triangle-1-s"></div>
-                                <div class="left settings_menu_title">Reports</div>                                
-                            </div>
-                            <div class="visualclear"></div>
-                            <!-- Settings Menu -->
-                            <div class="settings_submenu" style="display: none">
-                                 <a href="/reports/class_assignments/">Assignment Responses</a>
-                                 <a href="/reports/class_activity/">Class Activity</a>
-                                 <a href="/reports/class_summary/">Student Contributions</a>
-                                {%if user.is_staff %}
-                                    <hr />
-                                    <a href="/reports/activity/course/">Activity by Course</a>
-                                    <a href="/reports/activity/school/">Activity by School</a>
-                                {%endif%}     
-                            </div>
-                        </li>                        
-                        {% endif %}
-                        
-                        <li>
-                            {% block standardnav_help %}
-                                <div unselectable="on"><a href="/help/">Help</a></div>
-                            {% endblock %}
-                        </li>
-                        
-                        <li>
-                            <div unselectable="on"><a href="/contact/">Contact Us</a></div>
-                        </li>
-                    {% else %}
-                        <li><div unselectable="on"><a href="/help/">Help</a></div></li>
-                        <li><a href="/accounts/login/">Log In</a></li>
-                    {% endif %}
-        
-                    
-                </ul>
-            {% endblock %}
-        </div>
-        <div id="course_information">
-            <h1 id="course_title"><a href="/">{{course.title}}</a></h1>
-            {% block course_metadata %}{% endblock %}
-            <div class="clear: right;"></div>
-        </div>
-
     </script>
     
     <!--  Mustache Templating -->
@@ -347,13 +238,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                 }
             });
                   
-       jQuery("body").click(function() {
-           jQuery("div.settings_submenu").hide();
-           jQuery("div.settings_menu").removeClass("open").addClass("closed");
-       });
-      
-    });
-</script>
+            jQuery("body").click(function() {
+               jQuery("div.settings_submenu").hide();
+               jQuery("div.settings_menu").removeClass("open").addClass("closed");
+            });
+        });
+    </script>
 
     {% block js %}{% endblock %}
 </body>
