@@ -1,4 +1,4 @@
-/home/dotcloud/current/mediathread/requirements/src/Django-1.3.5.tar.gz
+/home/dotcloud/current/mediathread/requirements/src/Django-1.3.7.tar.gz
 /home/dotcloud/current/mediathread/requirements/src/resolver-0.2.1.tar.gz
 /home/dotcloud/current/mediathread/requirements/src/selector-0.8.11.tar.gz
 /home/dotcloud/current/mediathread/requirements/src/Paste-1.7.2.tar.gz
@@ -30,6 +30,7 @@
 
 /home/dotcloud/current/mediathread/requirements/src/selenium-2.29.0.tar.gz
 /home/dotcloud/current/mediathread/requirements/src/nose-1.1.2.tar.gz
+/home/dotcloud/current/mediathread/requirements/src/nose-exclude-0.1.5.tar.gz
 /home/dotcloud/current/mediathread/requirements/src/lettuce-0.1.34.tar.gz
 /home/dotcloud/current/mediathread/requirements/src/statsd-0.5.1.tar.gz
 
@@ -37,3 +38,5 @@
 /home/dotcloud/current/mediathread/requirements/src/python-dateutil-2.1.tar.gz
 /home/dotcloud/current/mediathread/requirements/src/mimeparse-0.1.3.tar.gz 
 /home/dotcloud/current/mediathread/requirements/src/django-tastypie-0.9.12-alpha.tar.gz
+
+/home/dotcloud/current/mediathread/requirements/src/coverage-3.5.3.tar.gz
