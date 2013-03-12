@@ -867,26 +867,27 @@ ul#standardnav
 	clear: both;
 }
 
-#footer #logo_ccnmtl
+#footer #logo_appsembler
 {
     display: block;
     clear: right;
     float: right;
-    width: 119px;
-    height: 26px;
+    width: 200px;
+    height: 42px;
     overflow: hidden;
     /* margin: 34px 10px 0 0;*/
     margin: 1px 10px 0 0;
     padding: 0;
     border: 0;
-    background: transparent url('../img/logo_ccnmtl.gif') left top no-repeat;
+    background: transparent url('../img/logo_appsembler.png') left top no-repeat;
 }
 
-#footer #logo_ccnmtl a
+
+#footer #logo_appsembler a
 {
     display: block;
-    width: 119px;
-    height: 26px;
+    width: 200px;
+    height: 42px;
     margin: 0;
     padding: 0;
     border: 0;
