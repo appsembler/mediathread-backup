@@ -1,11 +1,24 @@
 {% extends "base.html" %}
+
+{% load browserid %}
+
 {% block title %}
    Please Login
 {% endblock %}
 
 {% block content %}
 
+{% browserid_info %}
+
 <div style="padding: 20px; margin: 0px 30px 0px 5px; width: 285px; border: black solid 1px; float: left;">
+
+<h1>Persona Log In</h1>
+
+{% if user.is_authenticated %}
+          {% browserid_logout text='Logout' %}
+        {% else %}
+          {% browserid_login text='Login' %}
+{% endif %}
 
 <h1>Log In</h1>
 
@@ -37,4 +50,9 @@
 
 {% include "registration/description.html" %}
 
+{% endblock %}
+
+{% block js %}
+<!--    <script src="http://code.jquery.com/jquery-1.9.1.min.js"></script> -->
+{% browserid_js %}
 {% endblock %}

@@ -5,6 +5,34 @@
 #    'mediathread.deploy_specific',
 #    )
 
+# if you actually have template overrides or your own views, etc.
+EXTRA_INSTALLED_APPS = (
+    'django_browserid',  # Load after auth
+)
+
+# add any extra apps to the INSTALLED_APPS
+try:
+    INSTALLED_APPS = tuple(list(INSTALLED_APPS) + list(EXTRA_INSTALLED_APPS))
+except NameError:
+    pass
+
+# Add the django_browserid authentication backend.
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'django_browserid.auth.BrowserIDBackend',
+)
+
+SITE_URL = "http://localhost:8000"
+
+# Path to redirect to on successful login.
+LOGIN_REDIRECT_URL = '/'
+
+# Path to redirect to on unsuccessful login attempt.
+LOGIN_REDIRECT_URL_FAILURE = '/'
+
+# Path to redirect to on logout.
+LOGOUT_REDIRECT_URL = '/'
+
 ADMINS = (
     ('YOUR_GROUP', 'mediathread-sysadmin@example.edu'),
 )
